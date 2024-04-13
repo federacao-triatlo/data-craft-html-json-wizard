@@ -70,6 +70,8 @@ To push your local code changes to the online project, execute the following com
 
 The command `clasp push` replaces code that is on online project and `clasp pull` replaces all files locally. For this reason, **do not concurrently edit code locally and on `script.google.com`**
 
+Check the [`clasp` official documentation](https://developers.google.com/apps-script/guides/clasp) and the [`clasp` codelabs](https://codelabs.developers.google.com/codelabs/) to learn more about the usage of [Google Clasp](https://github.com/google/clasp).
+
 ## License
 
-**EnduranceTrio Web Components** is licensed under the terms of [MIT License](./LICENSE).
+**DataCraft: HTML & JSON Wizard** is licensed under the terms of [MIT License](./LICENSE).
