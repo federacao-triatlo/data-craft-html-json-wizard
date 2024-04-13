@@ -68,7 +68,6 @@ function createLiveResultsHtml(tableLiveResults) {
   html += '<div>' + '\n';
   liveRaces.forEach((liveRace, index) => {
     const tabNumber = index + 1;
-    html += '\t' + '<!-- TABLE' + tabNumber.toString().padStart(3, '0') + ' -->' + '\n';
     html += '\t' + '<section id="table' + tabNumber.toString().padStart(3, '0') + '" class="tab-content">' + '\n';
     html += '\t\t' + '<h3>' + liveRace.title + '</h3>' + '\n';
     html +=
