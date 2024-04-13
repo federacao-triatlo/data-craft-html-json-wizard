@@ -1,0 +1,30 @@
+{
+  "name": "data-craft-html-json-wizard",
+  "version": "1.0.0",
+  "description": "Google Apps Script for a spreadsheet that generates data and code used to manage competitions promoted by the Portuguese Triathlon Federation",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "login": "clasp login",
+    "logout": "clasp logout",
+    "pull": "clasp pull",
+    "push": "clasp push"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/federacao-triatlo/data-craft-html-json-wizard.git"
+  },
+  "author": "Ricardo do Canto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/federacao-triatlo/data-craft-html-json-wizard/issues"
+  },
+  "homepage": "https://github.com/federacao-triatlo/data-craft-html-json-wizard",
+  "devDependencies": {
+    "@google/clasp": "^2.4.2",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5"
+  }
+}
