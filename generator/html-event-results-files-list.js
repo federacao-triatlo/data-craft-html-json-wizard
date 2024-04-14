@@ -52,7 +52,7 @@ function createEventResultsFilesListHtml(eventYear, databaseSheetId, eventId, ev
     const linkTextSufix = '</span></a>';
 
     if (file.active) {
-      const hrefValue = fileBaseUrl + file.fileName.substring(0, 18) + '/' + file.fileName;
+      const hrefValue = fileBaseUrl + file.fileName.substring(0, 18) + '/results-files/' + file.fileName;
       const linkText = file.title + ' - ' + file.subtitle;
 
       html += '\t' + '<div class="results-files__item">' + '\n';
