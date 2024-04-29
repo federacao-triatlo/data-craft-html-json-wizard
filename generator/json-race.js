@@ -23,10 +23,10 @@
  */
 
 /**
- * Creates a JSON string for the eventDTO from the given event
+ * Creates a JSON string from the given event
  *
- * @param event the given Event
- * 
+ * @param race the given Race
+ *
  * @returns the JSON string with the required event
  */
 function createRaceJson(race) {
