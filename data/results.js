@@ -44,11 +44,15 @@ function getResultsByRangeName(resultsSheetId, resultsRangeName) {
   }
   const tableResultsFields = tableResults.shift();
 
+  const hiddenFields = ['athleteID', 'status', 'hidden'];
+
   const results = [];
   tableResults.map((tableResultsRecord) => {
     const result = {};
     tableResultsFields.map((key, columnIndex) => {
+      if (key && !hiddenFields.includes(key)) {
       result[key] = tableResultsRecord[columnIndex];
+      }
     });
 
     results.push(result);
