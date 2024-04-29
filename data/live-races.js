@@ -34,7 +34,7 @@ function getLiveRaces(tableLiveResultsData) {
 
   const liveRaces = [];
   tableLiveResultsData.map((tableLliveResultsRecord) => {
-    liveRace = {};
+    const liveRace = {};
     liveRace['label'] = tableLliveResultsRecord[0];
     liveRace['title'] = tableLliveResultsRecord[1];
     liveRaces.push(liveRace);
