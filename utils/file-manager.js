@@ -24,29 +24,29 @@
 
 /**
  * The ID of the "files" folder in the "api-files" repository that is stored in the Script Properties
- * 
+ *
  * @see https://developers.google.com/apps-script/reference/properties
  */
 const API_FILES_START_FOLDER_ID = PropertiesService.getScriptProperties().getProperty('API_FILES_START_FOLDER');
 
 /**
  * The ID of the "html" folder in the "api-files" repository that is stored in the Script Properties
- * 
+ *
  * @see https://developers.google.com/apps-script/reference/properties
  */
 const API_FILES_HTML_FOLDER_ID = PropertiesService.getScriptProperties().getProperty('API_FILES_HTML_FOLDER');
 
 /**
  * The ID of the "index.html" file in the "api-files" repository that is stored in the Script Properties
- * 
+ *
  * @see https://developers.google.com/apps-script/reference/properties
  */
 const INDEX_HTML_ID = PropertiesService.getScriptProperties().getProperty('INDEX_HTML_ID');
 
 /**
  * Gets the start folder of the "api-files" repository stored in the Google Drive.
- * 
- * @returns the start folder of the "api-files" repository stored in the Google Drive 
+ *
+ * @returns the start folder of the "api-files" repository stored in the Google Drive
  */
 function getApiFilesStartFolder() {
   return DriveApp.getFolderById(API_FILES_START_FOLDER_ID);
@@ -54,7 +54,7 @@ function getApiFilesStartFolder() {
 
 /**
  * Gets the html folder of the "api-files" repository stored in the Google Drive used to store HTML code.
- * 
+ *
  * @returns he html folder of the "api-files" repository stored in the Google Drive used to store HTML code
  */
 function getApiFilesHtmlFolder() {
@@ -64,17 +64,17 @@ function getApiFilesHtmlFolder() {
 /**
  * Checks if the given Google Drive folder contains a folder with the given name. If it does, returns that folder.
  * If such folder doesn't exist yet, creates it and then returns it.
- * 
+ *
  * @param {Object} parentFolder the given Google Drive folder that is the parent of the given folder
  * @param {String} folderName the folder name of the required folder
- * 
+ *
  * @returns the folder with the given name stored in the given folder
  */
 function getOrCreateFolderByParentAndName(parentFolder, folderName) {
   let resultFolder;
   try {
     resultFolder = parentFolder.getFoldersByName(folderName).next();
-  } catch {
+  } catch (error) {
     resultFolder = parentFolder.createFolder(folderName);
     DriveApp.getFileById(INDEX_HTML_ID).makeCopy('index.html', resultFolder);
   }
@@ -85,12 +85,12 @@ function getOrCreateFolderByParentAndName(parentFolder, folderName) {
 /**
  * Checks if a file with the given name exists on the given folder. If it does, replaces it with a file
  * with the same name and the given content. If it doesn't exists yet, creates it with the given content.
- * 
+ *
  * @param {Object} parentFolder the given Google Drive folder
  * @param {String} fileName the given name of the file to create or update
  * @param {Object} fileContent the content of the file to create or update
  * @param {MimeType} mimeType the give Apps Script file mime type
- * 
+ *
  * @see https://developers.google.com/apps-script/reference/base/mime-type
  */
 function saveOrUpdateFile(parentFolder, fileName, fileContent, mimeType) {
@@ -106,16 +106,16 @@ function saveOrUpdateFile(parentFolder, fileName, fileContent, mimeType) {
 /**
  * Checks if a file with the given name exists on the given folder. If it does, returns the file.
  * If the file doesn't exists, returns null.
- * 
+ *
  * @param {Object} parentFolder the given Google Drive folder
  * @param {String} fileName the file given name
- * 
+ *
  * @returns the file with the given name if it exist or null if it doesn't exists
  */
 function getFileByParentFolderAndName(parentFolder, fileName) {
   try {
     return parentFolder.getFilesByName(fileName).next();
-  } catch {
+  } catch (error) {
     return null;
   }
 }
