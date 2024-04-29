@@ -39,12 +39,12 @@ function getresultsFilesByDatabaseSheetId(databaseSheetId) {
   const tableResultsFileFields = tableResultsFile.shift();
 
   const resultsFiles = [];
-  tableResultsFile.map((tableProgramRecord) => {
+  tableResultsFile.map((tableResultsFileRecord) => {
     const resultsFile = {};
     tableResultsFileFields.map((key, columnIndex) => {
       if (key) {
         resultsFile[key] =
-          key === 'active' ? getBoolean(tableProgramRecord[columnIndex]) : tableProgramRecord[columnIndex];
+          key === 'active' ? getBoolean(tableResultsFileRecord[columnIndex]) : tableResultsFileRecord[columnIndex];
       }
     });
 
