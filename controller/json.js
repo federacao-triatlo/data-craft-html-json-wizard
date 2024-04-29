@@ -23,7 +23,7 @@
  */
 
 /**
- * Gets the year selected on the "Dashboard" sheet and saves a JSON file, in the user's Google Drive root folder,
+ * Gets the year selected on the "Dashboard" sheet and saves a JSON file, in the corresponding API Files folder,
  * with that year Event's list.
  */
 function saveEventsListJsonFile() {
@@ -36,8 +36,8 @@ function saveEventsListJsonFile() {
 }
 
 /**
- * Gets the Event reference selected on the "Dashboard" sheet and saves, in the user's Google Drive root folder,
- * a JSON file with that Event data and, for each Race of the event, a JSON file with the corresponding Race's data.
+ * Gets the Event reference selected on the "Dashboard" sheet and saves, in the corresponding API Files folder,
+ * a JSON file with that Event data and, for each Race of the Event, a JSON file with the corresponding Race's data.
  */
 function saveEventAndRacesJsonFiles() {
   const databaseSheetId = getSelectedYearDatabaseGoogleSheetId();
