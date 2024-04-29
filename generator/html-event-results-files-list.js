@@ -23,45 +23,14 @@
  */
 
 /**
- * Creates a string with the HTML code to display the results files list for the given Event.
+ * Creates a string with the HTML code to display the EventResults web component for the given Event.
  *
- * @param {String} eventYear the given event's year
- * @param {String} databaseSheetId the given Google Sheets ID where the Event table is stored
- * @param {String} eventId the event's ID
  * @param {String} eventReference the event's reference
  *
- * @returns the string with the HTML code to display the results files list for the given Event
+ * @returns the string with the HTML code to display the EventResults web component for the given Event
  */
-function createEventResultsFilesListHtml(eventYear, databaseSheetId, eventId, eventReference) {
-  const resultsFiles = getResultsFilesByEventId(databaseSheetId, eventId)
-    .filter((file) => {
-      return file.active;
-    })
-    .sort((fileA, fileB) => {
-      return fileA.displayOrder - fileB.displayOrder;
-    });
-
-  const fileBaseUrl = FILES_API_BASE_URL + eventYear + '/races/';
-
-  let html = '<div class="results-files">' + '\n';
-  html += '\t' + '<h2 class="results-files__header">Ficheiros</h2>' + '\n';
-
-  resultsFiles.forEach((file) => {
-    const linkTextPrefix =
-      '" target="_blank" rel="noopener noreferrer"><span class="fa fa-file-pdf"></span><span class="results-files__title">';
-    const linkTextSufix = '</span></a>';
-
-    if (file.active) {
-      const hrefValue = fileBaseUrl + file.fileName.substring(0, 18) + '/results-files/' + file.fileName;
-      const linkText = file.title + ' - ' + file.subtitle;
-
-      html += '\t' + '<div class="results-files__item">' + '\n';
-      html += '\t\t' + '<a href="' + hrefValue + linkTextPrefix + linkText + linkTextSufix + '\n';
-      html += '\t' + '</div>' + '\n';
-    }
-  });
-
-  html += '</div>' + '\n';
+function createEventResultsHtml(eventReference) {
+  const html = '<event-results event-reference="' + eventReference +'"></event-results>'
 
   return html.replace(/\t/gi, '\x20\x20');
 }

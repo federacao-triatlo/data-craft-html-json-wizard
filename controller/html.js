@@ -23,17 +23,13 @@
  */
 
 /**
- * Gets the Year, the Google Sheet ID of the Year's Database file, the Event's ID and the Event's reference
- * selected on the "Dashboard" sheet and saves, in html folder in the API-Files folder, a file with the HTML code
- * that lists all the results files for the selected Event.
+ * Gets the Event reference selected on the "Dashboard" sheet and saves, in the API Files html folder,
+ * a file with the HTML code to display the EventResults web component for the selected Event reference.
  */
-function saveEventResultsFilesListHtmlFile() {
-  const eventYear = getSelectedEventYear();
-  const databaseSheetId = getSelectedYearDatabaseGoogleSheetId();
-  const eventId = getSelectedEventId();
+function saveEventResultsHtmlFile() {
   const eventReference = getSelectedEventReference();
 
-  const html = createEventResultsFilesListHtml(eventYear, databaseSheetId, eventId, eventReference);
+  const html = createEventResultsHtml(eventReference);
   const fileName = eventReference + '.html';
 
   saveOrUpdateFile(getApiFilesHtmlFolder(), fileName, html, MimeType.HTML);
