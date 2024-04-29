@@ -41,11 +41,11 @@ function getRacesByDatabaseSheetId(databaseSheetId) {
   const hiddenFields = ['championships', 'technicalDelegate', 'headReferee', 'competitionJury', 'results'];
 
   const races = [];
-  tableRace.map((tableProgramRecord) => {
+  tableRace.map((tableRaceRecord) => {
     const race = {};
     tableRaceFields.map((key, columnIndex) => {
       if (key && !hiddenFields.includes(key)) {
-        race[key] = tableProgramRecord[columnIndex];
+        race[key] = key === 'derivedResults' ? getBoolean(tableRaceRecord[columnIndex]) : tableRaceRecord[columnIndex];
       }
     });
 
