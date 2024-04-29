@@ -63,16 +63,20 @@ function saveEventAndRacesJsonFiles() {
 }
 
 /**
- * Gets the Event reference selected on the "Dashboard" sheet and saves, in the user's Google Drive root folder,
- * a JSON file with that Event data.
+ * Gets the Event ID and the Event's database Google Sheet Id selected on the "Dashboard" sheet and saves,
+ * in the corresponding API Files folder, a JSON file with Event data.
  */
 function saveEventJsonFile() {
   const databaseSheetId = getSelectedYearDatabaseGoogleSheetId();
   const eventId = getSelectedEventId();
-  const eventReference = getSelectedEventReference();
 
-  const eventJsonString = createEventJsonByEventId(databaseSheetId, eventId);
-  const fileName = eventReference + '.json';
+  const eventWithRaces = getCompleteEventDataByEventId(databaseSheetId, eventId);
+  const eventReference = eventWithRaces.eventReference;
 
-  DriveApp.createFile(fileName, eventJsonString);
+  const eventJsonString = createEventJson(eventWithRaces);
+
+  const yearFolder = getOrCreateFolderByParentAndName(getApiFilesStartFolder(), eventReference.substring(0, 4));
+  const eventResourceFolder = getOrCreateFolderByParentAndName(yearFolder, 'events');
+
+  saveOrUpdateFile(eventResourceFolder, eventReference + '.json', eventJsonString, MimeType.PLAIN_TEXT);
 }
