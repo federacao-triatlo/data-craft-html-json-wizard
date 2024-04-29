@@ -31,7 +31,7 @@ function onOpen() {
     .addItem('JSON : Lista de Eventos do Ano', 'saveEventsListJsonFile')
     .addItem('JSON : Evento', 'saveEventJsonFile')
     .addItem('JSON : Evento & Resultados', 'saveEventAndRacesJsonFiles')
-    .addItem('HTML : Lista de recursos EventON', 'saveEventOnResourcesListHtmlFile')
+    .addItem('HTML : Resultados de Evento', 'saveEventResultsHtmlFile')
     .addItem('HTML : Lista de ficheiros de resultados', 'saveEventResultsFilesListHtmlFile')
     .addItem('HTML : Tabela de resultados', 'saveResultsTableHtmlFile')
     .addItem('HTML : Live Results', 'saveLiveResultsHtmlFile')
