@@ -38,7 +38,7 @@ function getProgramsByDatabaseSheetId(databaseSheetId) {
       .filter((record) => {
         return record[0];
       });
-  } catch {
+  } catch (error) {
     return [];
   }
   const tableProgramFields = tableProgram.shift();

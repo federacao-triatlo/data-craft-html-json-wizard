@@ -38,7 +38,7 @@ function getEventFilesByDatabaseSheetId(databaseSheetId) {
       .filter((record) => {
         return record[0];
       });
-  } catch {
+  } catch (error) {
     return [];
   }
   const tableEventFilesFields = tableEventFile.shift();

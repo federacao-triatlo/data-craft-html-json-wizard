@@ -39,7 +39,7 @@ function getResultsByRangeName(resultsSheetId, resultsRangeName) {
       .filter((record) => {
         return record[0];
       });
-  } catch {
+  } catch (error) {
     return [];
   }
   const tableResultsFields = tableResults.shift();
@@ -51,7 +51,7 @@ function getResultsByRangeName(resultsSheetId, resultsRangeName) {
     const result = {};
     tableResultsFields.map((key, columnIndex) => {
       if (key && !hiddenFields.includes(key)) {
-      result[key] = tableResultsRecord[columnIndex];
+        result[key] = tableResultsRecord[columnIndex];
       }
     });
 

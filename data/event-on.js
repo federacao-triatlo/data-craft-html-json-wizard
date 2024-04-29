@@ -41,7 +41,7 @@ function getEventEventOnData(eventYear, databaseSheetId, eventId, eventReference
       .filter((record) => {
         return record[0];
       });
-  } catch {
+  } catch (error) {
     return [];
   }
   tableEventFile.shift();
