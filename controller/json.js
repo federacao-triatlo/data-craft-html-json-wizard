@@ -91,7 +91,7 @@ function saveEventJsonFile() {
 function saveRaceJsonFile() {
   const databaseSheetId = getSelectedYearDatabaseGoogleSheetId();
   const eventReference = getSelectedEventReference();
-  const raceReference = getSelectedEventReference();
+  const raceReference = getSelectedRaceReference();
 
   const race = getCompleteRaceDataByRaceReference(databaseSheetId, raceReference);
 
