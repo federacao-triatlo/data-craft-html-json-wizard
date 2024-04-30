@@ -33,7 +33,7 @@ function onOpen() {
     .addItem('JSON : Evento & Provas', 'saveEventAndRacesJsonFiles')
     .addItem('JSON : Prova', 'saveRaceJsonFile')
     .addItem('HTML : Resultados de Evento', 'saveEventResultsHtmlFile')
-    .addItem('HTML : Lista de ficheiros de resultados', 'saveEventResultsFilesListHtmlFile')
+    .addItem('HTML : Lista de recursos EventON', 'saveEventOnResourcesListHtmlFile')
     .addItem('HTML : Tabela de resultados', 'saveResultsTableHtmlFile')
     .addItem('HTML : Live Results', 'saveLiveResultsHtmlFile')
     .addToUi();
