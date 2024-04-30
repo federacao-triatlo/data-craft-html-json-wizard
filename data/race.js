@@ -65,22 +65,81 @@ function getRacesByDatabaseSheetId(databaseSheetId) {
  * @returns the list of races in the given list with the given program ID
  */
 function getRacesByProgramId(databaseSheetId, races, programId) {
-  const tableProgramRace = SpreadsheetApp.openById(databaseSheetId)
-    .getRangeByName(RANGE_TABLE_PROGRAM_RACE)
-    .getDisplayValues()
-    .filter((record) => {
-      return record[0];
-    })
-    .slice(1);
+  const programRaceRelationships = getProgramRaceRelationshipsByDatabaseSheetId(databaseSheetId);
 
   const programRacesIds = [];
-  tableProgramRace.map((tableProgramRaceRecord) => {
-    if (tableProgramRaceRecord[1] == programId) {
-      programRacesIds.push(tableProgramRaceRecord[2]);
+  programRaceRelationships.forEach((relationship) => {
+    if (relationship.programID == programId) {
+      programRacesIds.push(relationship.raceID);
     }
   });
 
   return races.filter((race) => {
     return programRacesIds.includes(race.id);
   });
+}
+
+/**
+ * Gets the races of the given Programs.
+ *
+ * @param {String} databaseSheetId the Google Sheets file ID where the Races are stored
+ * @param {Array} programs the given programs
+ *
+ * @returns the Races of the given Programs
+ */
+function getProgramsRaces(databaseSheetId, programs) {
+  const programIds = [];
+  programs.forEach((program) => {
+    programIds.push(program.programId);
+  });
+
+  const programsRaceRelationships = getProgramRaceRelationshipsByDatabaseSheetId(databaseSheetId).filter(
+    (relationship) => {
+      return programIds.includes(relationship.programID);
+    }
+  );
+
+  const raceIds = [];
+  programsRaceRelationships.forEach((relationship) => {
+    if (!raceIds.includes(relationship.raceID)) {
+      raceIds.push(relationship.raceID);
+    }
+  });
+
+  return getRacesByDatabaseSheetId(databaseSheetId)
+    .filter((race) => {
+      return raceIds.includes(race.raceID);
+    })
+    .forEach((race) => {
+      race.programs = getPrograms(programs, race);
+    })
+    .sort((raceA, raceB) => {
+      return raceA.id - raceB.id;
+    });
+}
+
+/**
+ * Gets the Programs of the given Race from the supplied Programs and Program/Race relationships.
+ *
+ * @param {Array} programs the given Programs
+ * @param {Array} programRaceRelationship the give Program/Race relationship
+ * @param {Object} race the given Race
+ *
+ * @returns the Programs of the given Race
+ */
+function getPrograms(programs, programRaceRelationship, race) {
+  const raceProgramIds = [];
+  programRaceRelationship.forEach((relationship) => {
+    if (relationship.raceID === race.id && !raceProgramIds.includes(relationship.programID)) {
+      raceProgramIds.push(relationship.programID);
+    }
+  });
+
+  return programs
+    .filter((program) => {
+      return raceProgramIds.includes(program.id);
+    })
+    .sort((programA, programB) => {
+      return programA.id - programB.id;
+    });
 }

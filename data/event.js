@@ -51,7 +51,7 @@ function getEventsByDatabaseSheetId(databaseSheetId) {
   ];
 
   const events = [];
-  tableEvent.map((tableEventRecord) => {
+  tableEvent.forEach((tableEventRecord) => {
     const event = {};
     tableEventFields.map((key, columnIndex) => {
       if (returnedFields.includes(key)) {
@@ -66,7 +66,7 @@ function getEventsByDatabaseSheetId(databaseSheetId) {
 }
 
 /**
- * Gets, from the file with the given Google Sheet ID, the Event with a given event.
+ * Gets, from the file with the given Google Sheet ID, the Event with a given event ID.
  *
  * @param {String} databaseSheetId the Google Sheets ID of the file where the Event table is stored
  * @param {String} eventId the given ID of the required event
@@ -99,58 +99,9 @@ function getEventById(databaseSheetId, eventId) {
 function getCompleteEventDataByEventId(databaseSheetId, eventId) {
   const event = getEventById(databaseSheetId, eventId);
 
-  const eventRaces = [];
-  const eventRaceIds = [];
-  event.programs.forEach((program) => {
-    program.races.forEach((race) => {
-      if (!eventRaceIds.includes(race.id)) {
-        eventRaceIds.push(race.id);
-
-        race.eventID = program.eventID;
-        race.sport = program.sport;
-        race.distanceType = program.distanceType;
-        race.swimDistance = program.swimDistance;
-        race.swimLaps = program.swimLaps;
-        race.firstRunDistance = program.firstRunDistance;
-        race.firstRunLaps = program.firstRunLaps;
-        race.bikeDistance = program.bikeDistance;
-        race.bikeLaps = program.bikeLaps;
-        race.runDistance = program.runDistance;
-        race.runLaps = program.runLaps;
-        race.secondRunDistance = program.secondRunDistance;
-        race.secondRunLaps = program.secondRunLaps;
-
-        delete race.programID;
-
-        eventRaces.push(race);
-      }
-    });
-  });
-
-  eventRaces.sort((raceA, raceB) => {
-    return raceA.id - raceB.id;
-  });
-  event.races = eventRaces;
-
-  delete event.programs;
-
-  const publishedRacesIds = [];
-  event.resultsFiles.forEach((file) => {
-    if (!publishedRacesIds.includes(file.raceID)) {
-      publishedRacesIds.push(file.raceID);
-    }
-  });
-
-  event.races = event.races.filter((race) => {
-    return publishedRacesIds.includes(race.id);
-  });
-
-  eventRaces.forEach((race) => {
+  event.races = getProgramsRaces(databaseSheetId, event.programs).forEach((race) => {
     race.results = getResultsByRangeName(event.googleSheetID, race.resultsRangeName);
-    delete race.resultsRangeName;
   });
-
-  delete event.googleSheetID;
 
   return event;
 }
