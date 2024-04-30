@@ -143,3 +143,31 @@ function getPrograms(programs, programRaceRelationship, race) {
       return programA.id - programB.id;
     });
 }
+
+/**
+ * Gets the race with the given Race reference.
+ *
+ * @param {String} databaseSheetId the Google Sheets file ID where the Races are stored
+ * @param {String} raceReference the given Race reference
+ *
+ * @returns the race with the given Race reference
+ */
+function getCompleteRaceDataByRaceReference(databaseSheetId, raceReference) {
+  const race = getRacesByDatabaseSheetId(databaseSheetId).filter((race) => {
+    return race.raceReference == raceReference;
+  });
+
+  const databasePrograms = getProgramsByDatabaseSheetId(databaseSheetId);
+  const databaseProgramRaceRelationships = getProgramRaceRelationshipsByDatabaseSheetId(databaseSheetId);
+
+  race.programs = getPrograms(databasePrograms, databaseProgramRaceRelationships, race);
+
+  const raceEventId = race.programs[0].eventID;
+  const raceEvent = getEventsByDatabaseSheetId(databaseSheetId).filter((event) => {
+    return event.id === raceEventId;
+  });
+
+  race.results = getResultsByRangeName(raceEvent.googleSheetID, race.resultsRangeName);
+
+  return race;
+}
