@@ -23,27 +23,6 @@
  */
 
 /**
- * Creates a string with the HTML code to display the race results stored in the file with the given range name that
- * are stored in the Google Sheets file with the given ID.
- *
- * @param {String} resultsSheetId the Google Sheets file ID where the results are stored
- * @param {String} resultsRangeName the name of the range that contains the required results
- * @returns the string with the HTML code to display the required race results
- */
-function createResultsTableHtml(resultsSheetId, resultsRangeName) {
-  const results = getResultsByRangeName(resultsSheetId, resultsRangeName);
-
-  let html = '<div class="table-container">' + '\n';
-  html += '\t' + '<table class="table is-striped is-narrow is-hoverable table is-fullwidth">' + '\n';
-  html += createTableHeadHtml(results);
-  html += createTableBodyHtml(results);
-  html += '\t' + '</table>' + '\n';
-  html += '</div>' + '\n';
-
-  return html.replace(/\t/gi, '\x20\x20');
-}
-
-/**
  * Creates the HTML code of the table's head to display the given data.
  *
  * @param {Array} data the data to be displayed in the table

@@ -36,22 +36,6 @@ function saveEventResultsHtmlFile() {
 }
 
 /**
- * Gets the Race reference, the Google Sheet ID of the selected Event results file and the results range name
- * selected on the "Dashboard" sheet and saves, in html folder in the API-Files folder, a file with the HTML code
- * that displays the race results of the selected Race.
- */
-function saveResultsTableHtmlFile() {
-  const raceReference = getSelectedRaceReference();
-  const resultsSheetId = getSelectedResultsGoogleSheetId();
-  const resultsRangeName = getSelectedRaceResultsRangeName();
-
-  const html = createResultsTableHtml(resultsSheetId, resultsRangeName);
-  const fileName = raceReference + '.html';
-
-  saveOrUpdateFile(getApiFilesHtmlFolder(), fileName, html, MimeType.HTML);
-}
-
-/**
  * Gets the Event's reference selected on the "Dashboard" sheet and the tabular data stored on the "TableLiveResults"
  * named range and then saves, in html folder in the API-Files folder, a file with the HTML code that displays
  * the live results of the selected Event.
