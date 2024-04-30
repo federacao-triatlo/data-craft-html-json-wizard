@@ -80,3 +80,20 @@ function saveEventJsonFile() {
 
   saveOrUpdateFile(eventResourceFolder, eventReference + '.json', eventJsonString, MimeType.PLAIN_TEXT);
 }
+
+/**
+ * Gets the Race reference and the races's database Google Sheet Id selected on the "Dashboard" sheet and saves,
+ * in the corresponding API Files folder, a JSON file with Race data.
+ */
+function saveRaceJsonFile() {
+  const databaseSheetId = getSelectedYearDatabaseGoogleSheetId();
+  const eventReference = getSelectedEventReference();
+  const raceReference = getSelectedEventReference();
+
+  const race = getCompleteRaceDataByRaceReference(databaseSheetId, raceReference);
+
+  const yearFolder = getOrCreateFolderByParentAndName(getApiFilesStartFolder(), eventReference.substring(0, 4));
+  const raceResourceFolder = getOrCreateFolderByParentAndName(yearFolder, 'races');
+
+  saveOrUpdateFile(raceResourceFolder, race.raceReference + '.json', createRaceJson(race), MimeType.PLAIN_TEXT);
+}
