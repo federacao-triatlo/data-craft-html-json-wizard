@@ -27,8 +27,12 @@
  *
  * @param {String} databaseSheetId the given Google Sheets ID of the database file that stores the required events
  *
- * @returns a JSON strin with a list of the events stored in the given database
+ * @returns a JSON string with a list of the events stored in the given database
  */
 function createEventsJsonByDatabaseSheetId(databaseSheetId) {
-  return JSON.stringify(getEventsByDatabaseSheetId(databaseSheetId));
+  const eventsDTO = getEventsByDatabaseSheetId(databaseSheetId).forEach((event) => {
+    delete event.googleSheetID;
+  });
+
+  return JSON.stringify(eventsDTO);
 }

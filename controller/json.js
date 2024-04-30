@@ -32,7 +32,10 @@ function saveEventsListJsonFile() {
   const eventsJsonString = createEventsJsonByDatabaseSheetId(databaseSheetId);
   const fileName = 'events.json';
 
-  DriveApp.createFile(fileName, eventsJsonString);
+  const yearFolder = getOrCreateFolderByParentAndName(getApiFilesStartFolder(), getSelectedEventYear());
+  const eventResourceFolder = getOrCreateFolderByParentAndName(yearFolder, 'events');
+
+  saveOrUpdateFile(eventResourceFolder, fileName, eventsJsonString, MimeType.PLAIN_TEXT);
 }
 
 /**
