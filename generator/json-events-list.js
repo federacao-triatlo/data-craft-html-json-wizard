@@ -30,9 +30,10 @@
  * @returns a JSON string with a list of the events stored in the given database
  */
 function createEventsJsonByDatabaseSheetId(databaseSheetId) {
-  const eventsDTO = getEventsByDatabaseSheetId(databaseSheetId).forEach((event) => {
+  const events = getEventsByDatabaseSheetId(databaseSheetId);
+  events.forEach((event) => {
     delete event.googleSheetID;
   });
 
-  return JSON.stringify(eventsDTO);
+  return JSON.stringify(events);
 }
