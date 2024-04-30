@@ -153,9 +153,11 @@ function getPrograms(programs, programRaceRelationship, race) {
  * @returns the race with the given Race reference
  */
 function getCompleteRaceDataByRaceReference(databaseSheetId, raceReference) {
-  const race = getRacesByDatabaseSheetId(databaseSheetId).filter((race) => {
-    return race.raceReference == raceReference;
-  });
+  const race = getRacesByDatabaseSheetId(databaseSheetId)
+    .filter((race) => {
+      return race.raceReference == raceReference;
+    })
+    .shift();
 
   const databasePrograms = getProgramsByDatabaseSheetId(databaseSheetId);
   const databaseProgramRaceRelationships = getProgramRaceRelationshipsByDatabaseSheetId(databaseSheetId);
@@ -163,9 +165,11 @@ function getCompleteRaceDataByRaceReference(databaseSheetId, raceReference) {
   race.programs = getPrograms(databasePrograms, databaseProgramRaceRelationships, race);
 
   const raceEventId = race.programs[0].eventID;
-  const raceEvent = getEventsByDatabaseSheetId(databaseSheetId).filter((event) => {
-    return event.id === raceEventId;
-  });
+  const raceEvent = getEventsByDatabaseSheetId(databaseSheetId)
+    .filter((event) => {
+      return event.id === raceEventId;
+    })
+    .shift();
 
   race.results = getResultsByRangeName(raceEvent.googleSheetID, race.resultsRangeName);
 
