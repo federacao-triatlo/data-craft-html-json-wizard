@@ -64,7 +64,7 @@ function getProgramsByDatabaseSheetId(databaseSheetId) {
  * Gets the programs with a given program ID stored in the Google Sheets file with the given ID.
  *
  * @param {String} databaseSheetId the Google Sheets file ID where the Program table is stored
- * @param {String} eventId the ID of the required program
+ * @param {String} eventId the event ID of the required program
  *
  * @returns the list of programs with the given event ID stored in the Google Sheets file with the given ID
  */

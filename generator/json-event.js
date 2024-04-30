@@ -45,9 +45,39 @@ function createEventJson(event) {
  */
 function createEventWithRacesJson(databaseSheetId, eventId) {
   const eventWithRaces = getCompleteEventDataByEventId(databaseSheetId, eventId);
+  delete eventWithRaces.googleSheetID;
+
+  const publishedRacesIds = [];
+  eventWithRaces.resultsFiles.forEach((file) => {
+    if (!publishedRacesIds.includes(file.raceID)) {
+      publishedRacesIds.push(file.raceID);
+    }
+  });
+
+  eventWithRaces.races = eventWithRaces.filter((race) => {
+    return publishedRacesIds.includes(race.id);
+  });
 
   const races = [];
   eventWithRaces.races.forEach((element) => {
+    if (element.programs.length == 1) {
+      const program = eventWithRaces.programs[0];
+
+      element.eventID = program.eventID;
+      element.sport = program.sport;
+      element.distanceType = program.distanceType;
+      element.swimDistance = program.swimDistance;
+      element.swimLaps = program.swimLaps;
+      element.firstRunDistance = program.firstRunDistance;
+      element.firstRunLaps = program.firstRunLaps;
+      element.bikeDistance = program.bikeDistance;
+      element.bikeLaps = program.bikeLaps;
+      element.runDistance = program.runDistance;
+      element.runLaps = program.runLaps;
+      element.secondRunDistance = program.secondRunDistance;
+      element.secondRunLaps = program.secondRunLaps;
+    }
+
     const race = {};
     race.raceReference = element.raceReference;
     race.raceJsonString = createRaceJson(element);

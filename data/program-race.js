@@ -23,14 +23,37 @@
  */
 
 /**
- * Creates a JSON string from the given event
+ * Gets the Program/Race relationships stored in the Google Sheets file with the given ID.
  *
- * @param race the given Race
+ * @param {String} databaseSheetId the Google Sheets file ID where the ProgramRace table is stored
  *
- * @returns the JSON string with the required event
+ * @returns the Program/Race relationships stored in the Google Sheets file with the given ID
  */
-function createRaceJson(race) {
-  delete race.resultsRangeName;
+function getProgramRaceRelationshipsByDatabaseSheetId(databaseSheetId) {
+  let tableProgramRace;
+  try {
+    tableProgramRace = SpreadsheetApp.openById(databaseSheetId)
+      .getRangeByName(RANGE_TABLE_PROGRAM_RACE)
+      .getDisplayValues()
+      .filter((record) => {
+        return record[0];
+      });
+  } catch (error) {
+    return tableProgramRace;
+  }
+  const tableProgramRaceFields = tableProgramRace.shift();
 
-  return JSON.stringify(race);
+  const programRaceRelationships = [];
+  tableProgramRace.forEach((record) => {
+    const relationship = {};
+    tableProgramRaceFields.map((key, columnIndex) => {
+      if (key) {
+        relationship[key] = record[columnIndex];
+      }
+    });
+
+    programRaceRelationships.push(relationship);
+  });
+
+  return programRaceRelationships;
 }
