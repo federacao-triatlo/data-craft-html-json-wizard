@@ -90,7 +90,7 @@ function getRacesByProgramId(databaseSheetId, races, programId) {
 function getProgramsRaces(databaseSheetId, programs) {
   const programIds = [];
   programs.forEach((program) => {
-    programIds.push(program.programId);
+    programIds.push(program.id);
   });
 
   const programsRaceRelationships = getProgramRaceRelationshipsByDatabaseSheetId(databaseSheetId).filter(
@@ -106,30 +106,31 @@ function getProgramsRaces(databaseSheetId, programs) {
     }
   });
 
-  return getRacesByDatabaseSheetId(databaseSheetId)
-    .filter((race) => {
-      return raceIds.includes(race.raceID);
-    })
-    .forEach((race) => {
-      race.programs = getPrograms(programs, race);
-    })
-    .sort((raceA, raceB) => {
-      return raceA.id - raceB.id;
-    });
+  const programsRaces = getRacesByDatabaseSheetId(databaseSheetId).filter((race) => {
+    return raceIds.includes(race.id);
+  });
+
+  programsRaces.forEach((race) => {
+    race.programs = getPrograms(programs, programsRaceRelationships, race);
+  });
+
+  return programsRaces.sort((raceA, raceB) => {
+    return raceA.id - raceB.id;
+  });
 }
 
 /**
  * Gets the Programs of the given Race from the supplied Programs and Program/Race relationships.
  *
  * @param {Array} programs the given Programs
- * @param {Array} programRaceRelationship the give Program/Race relationship
- * @param {Object} race the given Race
+ * @param {Array} programRaceRelationships the give Program/Race relationship
+ * @param {Race} race the given Race
  *
  * @returns the Programs of the given Race
  */
-function getPrograms(programs, programRaceRelationship, race) {
+function getPrograms(programs, programRaceRelationships, race) {
   const raceProgramIds = [];
-  programRaceRelationship.forEach((relationship) => {
+  programRaceRelationships.forEach((relationship) => {
     if (relationship.raceID === race.id && !raceProgramIds.includes(relationship.programID)) {
       raceProgramIds.push(relationship.programID);
     }

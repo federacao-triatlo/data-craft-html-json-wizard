@@ -99,9 +99,13 @@ function getEventById(databaseSheetId, eventId) {
 function getCompleteEventDataByEventId(databaseSheetId, eventId) {
   const event = getEventById(databaseSheetId, eventId);
 
-  event.races = getProgramsRaces(databaseSheetId, event.programs).forEach((race) => {
+  const eventRaces = getProgramsRaces(databaseSheetId, event.programs);
+
+  eventRaces.forEach((race) => {
     race.results = getResultsByRangeName(event.googleSheetID, race.resultsRangeName);
   });
+
+  event.races = eventRaces;
 
   return event;
 }

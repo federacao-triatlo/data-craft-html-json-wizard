@@ -25,11 +25,16 @@
 /**
  * Creates a JSON string for the eventDTO from the given event.
  *
- * @param {Event} event the given Event
+ * @param {Event} event
+ * @param {boolean} hasFilteredRaces flag that indicates if the Event's Races are already filtered
  *
  * @returns the JSON string with the required event
  */
-function createEventJson(event) {
+function createEventJson(event, hasFilteredRaces) {
+  delete event.googleSheetID;
+
+  event = hasFilteredRaces ? event : filterEventRaces(event);
+
   const eventDTO = getEventDTO(event);
 
   return JSON.stringify(eventDTO);
@@ -45,23 +50,12 @@ function createEventJson(event) {
  */
 function createEventWithRacesJson(databaseSheetId, eventId) {
   const eventWithRaces = getCompleteEventDataByEventId(databaseSheetId, eventId);
-  delete eventWithRaces.googleSheetID;
-
-  const publishedRacesIds = [];
-  eventWithRaces.resultsFiles.forEach((file) => {
-    if (!publishedRacesIds.includes(file.raceID)) {
-      publishedRacesIds.push(file.raceID);
-    }
-  });
-
-  eventWithRaces.races = eventWithRaces.filter((race) => {
-    return publishedRacesIds.includes(race.id);
-  });
+  const eventWithFilteredRaces = filterEventRaces(eventWithRaces);
 
   const races = [];
-  eventWithRaces.races.forEach((element) => {
+  eventWithFilteredRaces.races.forEach((element) => {
     if (element.programs.length == 1) {
-      const program = eventWithRaces.programs[0];
+      const program = element.programs[0];
 
       element.eventID = program.eventID;
       element.sport = program.sport;
@@ -85,10 +79,32 @@ function createEventWithRacesJson(databaseSheetId, eventId) {
   });
 
   const event = {};
-  event.eventReference = eventWithRaces.eventReference;
-  event.eventJsonString = createEventJson(eventWithRaces);
+  event.eventReference = eventWithFilteredRaces.eventReference;
+  event.eventJsonString = createEventJson(eventWithFilteredRaces, true);
 
   event.races = races;
+
+  return event;
+}
+
+/**
+ * Filters the Event's Races, keeping only the Races that have a results files.
+ *
+ * @param {Event} event the given Event
+ *
+ * @returns the event with filtered Races
+ */
+function filterEventRaces(event) {
+  const publishedRacesIds = [];
+  event.resultsFiles.forEach((file) => {
+    if (!publishedRacesIds.includes(file.raceID)) {
+      publishedRacesIds.push(file.raceID);
+    }
+  });
+
+  event.races = event.races.filter((race) => {
+    return publishedRacesIds.includes(race.id);
+  });
 
   return event;
 }
