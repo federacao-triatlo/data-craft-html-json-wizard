@@ -76,7 +76,7 @@ function saveEventJsonFile() {
   const eventWithRaces = getCompleteEventDataByEventId(databaseSheetId, eventId);
   const eventReference = eventWithRaces.eventReference;
 
-  const eventJsonString = createEventJson(eventWithRaces);
+  const eventJsonString = createEventJson(eventWithRaces, false);
 
   const yearFolder = getOrCreateFolderByParentAndName(getApiFilesStartFolder(), eventReference.substring(0, 4));
   const eventResourceFolder = getOrCreateFolderByParentAndName(yearFolder, 'events');

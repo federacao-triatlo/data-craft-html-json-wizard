@@ -65,7 +65,7 @@ function getApiFilesHtmlFolder() {
  * Checks if the given Google Drive folder contains a folder with the given name. If it does, returns that folder.
  * If such folder doesn't exist yet, creates it and then returns it.
  *
- * @param {Object} parentFolder the given Google Drive folder that is the parent of the given folder
+ * @param {Folder} parentFolder the given Google Drive folder that is the parent of the given folder
  * @param {String} folderName the folder name of the required folder
  *
  * @returns the folder with the given name stored in the given folder
@@ -86,9 +86,9 @@ function getOrCreateFolderByParentAndName(parentFolder, folderName) {
  * Checks if a file with the given name exists on the given folder. If it does, replaces it with a file
  * with the same name and the given content. If it doesn't exists yet, creates it with the given content.
  *
- * @param {Object} parentFolder the given Google Drive folder
+ * @param {Folder} parentFolder the given Google Drive folder
  * @param {String} fileName the given name of the file to create or update
- * @param {Object} fileContent the content of the file to create or update
+ * @param {String} fileContent the content of the file to create or update
  * @param {MimeType} mimeType the give Apps Script file mime type
  *
  * @see https://developers.google.com/apps-script/reference/base/mime-type
@@ -107,7 +107,7 @@ function saveOrUpdateFile(parentFolder, fileName, fileContent, mimeType) {
  * Checks if a file with the given name exists on the given folder. If it does, returns the file.
  * If the file doesn't exists, returns null.
  *
- * @param {Object} parentFolder the given Google Drive folder
+ * @param {Folder} parentFolder the given Google Drive folder
  * @param {String} fileName the file given name
  *
  * @returns the file with the given name if it exist or null if it doesn't exists
