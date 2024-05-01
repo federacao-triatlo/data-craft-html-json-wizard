@@ -1,6 +1,6 @@
 {
   "name": "data-craft-html-json-wizard",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Google Apps Script for a spreadsheet that generates data and code used to manage competitions promoted by the Portuguese Triathlon Federation",
   "main": "index.js",
   "type": "module",
