@@ -80,14 +80,14 @@ function getRacesByProgramId(databaseSheetId, races, programId) {
 }
 
 /**
- * Gets the races of the given Programs.
+ * Gets the races of the given Programs list.
  *
  * @param {String} databaseSheetId the Google Sheets file ID where the Races are stored
- * @param {Array} programs the given programs
+ * @param {Array} programs the given programs list
  *
  * @returns the Races of the given Programs
  */
-function getProgramsRaces(databaseSheetId, programs) {
+function getRacesByPrograms(databaseSheetId, programs) {
   const programIds = [];
   programs.forEach((program) => {
     programIds.push(program.id);
@@ -111,38 +111,12 @@ function getProgramsRaces(databaseSheetId, programs) {
   });
 
   programsRaces.forEach((race) => {
-    race.programs = getPrograms(programs, programsRaceRelationships, race);
+    race.programs = getRacePrograms(programs, programsRaceRelationships, race);
   });
 
   return programsRaces.sort((raceA, raceB) => {
     return raceA.id - raceB.id;
   });
-}
-
-/**
- * Gets the Programs of the given Race from the supplied Programs and Program/Race relationships.
- *
- * @param {Array} programs the given Programs
- * @param {Array} programRaceRelationships the give Program/Race relationship
- * @param {Race} race the given Race
- *
- * @returns the Programs of the given Race
- */
-function getPrograms(programs, programRaceRelationships, race) {
-  const raceProgramIds = [];
-  programRaceRelationships.forEach((relationship) => {
-    if (relationship.raceID === race.id && !raceProgramIds.includes(relationship.programID)) {
-      raceProgramIds.push(relationship.programID);
-    }
-  });
-
-  return programs
-    .filter((program) => {
-      return raceProgramIds.includes(program.id);
-    })
-    .sort((programA, programB) => {
-      return programA.id - programB.id;
-    });
 }
 
 /**
@@ -163,7 +137,7 @@ function getCompleteRaceDataByRaceReference(databaseSheetId, raceReference) {
   const databasePrograms = getProgramsByDatabaseSheetId(databaseSheetId);
   const databaseProgramRaceRelationships = getProgramRaceRelationshipsByDatabaseSheetId(databaseSheetId);
 
-  race.programs = getPrograms(databasePrograms, databaseProgramRaceRelationships, race);
+  race.programs = getRacePrograms(databasePrograms, databaseProgramRaceRelationships, race);
 
   const raceEventId = race.programs[0].eventID;
   const raceEvent = getEventsByDatabaseSheetId(databaseSheetId)

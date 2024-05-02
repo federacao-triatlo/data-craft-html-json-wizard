@@ -55,25 +55,10 @@ function getresultsFilesByDatabaseSheetId(databaseSheetId) {
 }
 
 /**
- * Gets the results file list of the given event ID stored in the Google Sheets file with the given ID.
- *
- * @param {String} databaseSheetId the ID of the Google Sheets file where the ResultsFiles table is stored
- *
- * @param {String} eventId the given event ID
- * @returns the list of results files of the given event
- */
-function getResultsFilesByEventId(databaseSheetId, eventId) {
-  const eventPrograms = getProgramsByEventId(databaseSheetId, eventId);
-  const eventRacesIds = getRaceIdsFromPrograms(eventPrograms);
-
-  return getResultsFilesByRaceIds(databaseSheetId, eventRacesIds);
-}
-
-/**
  * Gets the results files list of the given race IDs list stored in the Google Sheets file with the given ID.
  *
  * @param {String} databaseSheetId the ID of the Google Sheets file where the ResultsFiles table is stored
- * @param {String} raceIds the list of races
+ * @param {String} raceIds the list of Races IDs
  *
  * @returns the list of results files of the given races IDs
  */

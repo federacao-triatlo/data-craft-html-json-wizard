@@ -69,36 +69,33 @@ function getProgramsByDatabaseSheetId(databaseSheetId) {
  * @returns the list of programs with the given event ID stored in the Google Sheets file with the given ID
  */
 function getProgramsByEventId(databaseSheetId, eventId) {
-  const programs = getProgramsByDatabaseSheetId(databaseSheetId).filter((element) => {
+  return getProgramsByDatabaseSheetId(databaseSheetId).filter((element) => {
     return element.eventID == eventId;
   });
-
-  const seasonRaces = getRacesByDatabaseSheetId(databaseSheetId);
-  programs.forEach((program) => {
-    program.races = getRacesByProgramId(databaseSheetId, seasonRaces, program.id);
-  });
-
-  return programs;
 }
 
 /**
- * Gets the list of the race IDs from the given programs list.
+ * Gets the Programs of the given Race from the supplied Programs and Program/Race relationships.
  *
- * @param {String} programs the given programs
+ * @param {Array} programs the given Programs
+ * @param {Array} programRaceRelationships the give Program/Race relationship
+ * @param {Race} race the given Race
  *
- * @returns the list of the given programs race's IDs
+ * @returns the Programs of the given Race
  */
-function getRaceIdsFromPrograms(programs) {
-  const raceIds = [];
-  programs.forEach((program) => {
-    program.races.forEach((race) => {
-      if (!raceIds.includes(race.id)) {
-        raceIds.push(race.id);
-      }
-    });
+function getRacePrograms(programs, programRaceRelationships, race) {
+  const raceProgramIds = [];
+  programRaceRelationships.forEach((relationship) => {
+    if (relationship.raceID === race.id && !raceProgramIds.includes(relationship.programID)) {
+      raceProgramIds.push(relationship.programID);
+    }
   });
 
-  return raceIds.sort((a, b) => {
-    return a - b;
-  });
+  return programs
+    .filter((program) => {
+      return raceProgramIds.includes(program.id);
+    })
+    .sort((programA, programB) => {
+      return programA.id - programB.id;
+    });
 }

@@ -47,7 +47,7 @@ function saveEventAndRacesJsonFiles() {
   const eventId = getSelectedEventId();
   const eventReference = getSelectedEventReference();
 
-  const event = createEventWithRacesJson(databaseSheetId, eventId);
+  const event = createEventJsonWithRaceResults(databaseSheetId, eventId);
 
   const yearFolder = getOrCreateFolderByParentAndName(getApiFilesStartFolder(), eventReference.substring(0, 4));
   const eventResourceFolder = getOrCreateFolderByParentAndName(yearFolder, 'events');
@@ -72,11 +72,9 @@ function saveEventAndRacesJsonFiles() {
 function saveEventJsonFile() {
   const databaseSheetId = getSelectedYearDatabaseGoogleSheetId();
   const eventId = getSelectedEventId();
+  const eventReference = getSelectedEventReference();
 
-  const eventWithRaces = getCompleteEventDataByEventId(databaseSheetId, eventId);
-  const eventReference = eventWithRaces.eventReference;
-
-  const eventJsonString = createEventJson(eventWithRaces, false);
+  const eventJsonString = createEventJsonWithoutRaceResults(databaseSheetId, eventId);
 
   const yearFolder = getOrCreateFolderByParentAndName(getApiFilesStartFolder(), eventReference.substring(0, 4));
   const eventResourceFolder = getOrCreateFolderByParentAndName(yearFolder, 'events');
