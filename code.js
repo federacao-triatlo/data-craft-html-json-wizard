@@ -29,12 +29,12 @@ function onOpen() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('Gerar Ficheiros')
     .addItem('JSON : Lista de Eventos do Ano', 'saveEventsListJsonFile')
-    .addItem('JSON : Evento', 'saveEventJsonFile')
     .addItem('JSON : Evento & Provas', 'saveEventAndRacesJsonFiles')
+    .addItem('JSON : Evento', 'saveEventJsonFile')
     .addItem('JSON : Prova', 'saveRaceJsonFile')
-    .addItem('HTML : Resultados de Evento', 'saveEventResultsHtmlFile')
     .addItem('HTML : Lista de recursos EventON', 'saveEventOnResourcesListHtmlFile')
     .addItem('HTML : Live Results', 'saveLiveResultsHtmlFile')
+    .addItem('HTML : Resultados de Evento', 'saveEventResultsHtmlFile')
     .addToUi();
 }
 

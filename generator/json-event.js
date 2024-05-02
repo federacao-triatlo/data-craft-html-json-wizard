@@ -23,6 +23,49 @@
  */
 
 /**
+ * Creates an object with the JSON string of the Event and its Races and results.
+ *
+ * @param {String} databaseSheetId the given Google Sheet ID of the database files that stores the given Event
+ * @param {String} eventId the given Event ID
+ *
+ * @returns an object with the JSON string of the Event and its races
+ */
+function createEventJsonWithRaceResults(databaseSheetId, eventId) {
+  const eventWithRaceResults = getEventWithRaceResultsByEventId(databaseSheetId, eventId);
+  const eventWithFilteredRaces = filterEventRaces(eventWithRaceResults);
+
+  const races = [];
+  eventWithFilteredRaces.races.forEach((element) => {
+    const race = {};
+    race.raceReference = element.raceReference;
+    race.raceJsonString = createRaceJson(element);
+    races.push(race);
+  });
+
+  const event = {};
+  event.eventReference = eventWithFilteredRaces.eventReference;
+  event.eventJsonString = createEventJson(eventWithFilteredRaces, true);
+
+  event.races = races;
+
+  return event;
+}
+
+/**
+ * Creates an object with the JSON string of the Event with the given Event ID.
+ *
+ * @param {String} databaseSheetId the given Google Sheet ID of the database files that stores the given Event
+ * @param {String} eventId the given Event ID
+ *
+ * @returns an object with the JSON string of the Event with the given Event ID
+ */
+function createEventJsonWithoutRaceResults(databaseSheetId, eventId) {
+  const event = getEventById(databaseSheetId, eventId);
+
+  return createEventJson(event, false);
+}
+
+/**
  * Creates a JSON string for the eventDTO from the given event.
  *
  * @param {Event} event
@@ -41,54 +84,7 @@ function createEventJson(event, hasFilteredRaces) {
 }
 
 /**
- * Creates an object with the JSON string of the Event and its races
- *
- * @param {String} databaseSheetId the given Google Sheet ID of the database files that stores the given Event
- * @param {String} eventId the given Event ID
- *
- * @returns an object with the JSON string of the Event and its races
- */
-function createEventWithRacesJson(databaseSheetId, eventId) {
-  const eventWithRaces = getCompleteEventDataByEventId(databaseSheetId, eventId);
-  const eventWithFilteredRaces = filterEventRaces(eventWithRaces);
-
-  const races = [];
-  eventWithFilteredRaces.races.forEach((element) => {
-    if (element.programs.length == 1) {
-      const program = element.programs[0];
-
-      element.eventID = program.eventID;
-      element.sport = program.sport;
-      element.distanceType = program.distanceType;
-      element.swimDistance = program.swimDistance;
-      element.swimLaps = program.swimLaps;
-      element.firstRunDistance = program.firstRunDistance;
-      element.firstRunLaps = program.firstRunLaps;
-      element.bikeDistance = program.bikeDistance;
-      element.bikeLaps = program.bikeLaps;
-      element.runDistance = program.runDistance;
-      element.runLaps = program.runLaps;
-      element.secondRunDistance = program.secondRunDistance;
-      element.secondRunLaps = program.secondRunLaps;
-    }
-
-    const race = {};
-    race.raceReference = element.raceReference;
-    race.raceJsonString = createRaceJson(element);
-    races.push(race);
-  });
-
-  const event = {};
-  event.eventReference = eventWithFilteredRaces.eventReference;
-  event.eventJsonString = createEventJson(eventWithFilteredRaces, true);
-
-  event.races = races;
-
-  return event;
-}
-
-/**
- * Filters the Event's Races, keeping only the Races that have a results files.
+ * Filters the Event's Races, keeping only the Races that have a results file.
  *
  * @param {Event} event the given Event
  *

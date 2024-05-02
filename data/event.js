@@ -66,6 +66,24 @@ function getEventsByDatabaseSheetId(databaseSheetId) {
 }
 
 /**
+ * Gets the complete data of the given event's ID which is stored in the Google Sheets file with the given ID.
+ *
+ * @param {String} databaseSheetId the given Google Sheets file ID where the Event table is stored
+ * @param {String} eventId the given ID of the required event
+ *
+ * @returns the complete event data
+ */
+function getEventWithRaceResultsByEventId(databaseSheetId, eventId) {
+  const event = getEventById(databaseSheetId, eventId);
+
+  event.races.forEach((race) => {
+    race.results = getResultsByRangeName(event.googleSheetID, race.resultsRangeName);
+  });
+
+  return event;
+}
+
+/**
  * Gets, from the file with the given Google Sheet ID, the Event with a given event ID.
  *
  * @param {String} databaseSheetId the Google Sheets ID of the file where the Event table is stored
@@ -83,29 +101,16 @@ function getEventById(databaseSheetId, eventId) {
   event.eventFiles = getEventFilesByEventId(databaseSheetId, eventId);
   event.organizers = getOrganizersByEventId(databaseSheetId, eventId);
   event.programs = getProgramsByEventId(databaseSheetId, eventId);
-  event.resultsFiles = getResultsFilesByRaceIds(databaseSheetId, getRaceIdsFromPrograms(event.programs));
+  event.races = getRacesByPrograms(databaseSheetId, event.programs);
 
-  return event;
-}
-
-/**
- * Gets the complete data of the given event's ID which is stored in the Google Sheets file with the given ID.
- *
- * @param {String} databaseSheetId the given Google Sheets file ID where the Event table is stored
- * @param {String} eventId the given ID of the required event
- *
- * @returns the complete event data
- */
-function getCompleteEventDataByEventId(databaseSheetId, eventId) {
-  const event = getEventById(databaseSheetId, eventId);
-
-  const eventRaces = getProgramsRaces(databaseSheetId, event.programs);
-
-  eventRaces.forEach((race) => {
-    race.results = getResultsByRangeName(event.googleSheetID, race.resultsRangeName);
-  });
-
-  event.races = eventRaces;
+  const raceIds = event.races
+    .map((race) => {
+      return race.id;
+    })
+    .sort((raceA, raceB) => {
+      return raceA.id - raceB.id;
+    });
+  event.resultsFiles = getResultsFilesByRaceIds(databaseSheetId, raceIds);
 
   return event;
 }
